@@ -1,0 +1,6 @@
+nome,força,destreza,vigor,inteligencia,percepção,raciocinio
+guerreiro,20,20,20,1,1,1
+mago,1,1,1,20,20,20
+ladino,1,20,1,20,1,20
+campones,1,1,1,1,1,1
+ninja,1,20,20,1,20,1
