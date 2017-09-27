@@ -13,7 +13,6 @@ import modelo.Elemento;
 
 public class Arquivista {
     private String nomeArquivo;
-    private String nomeSaida = "Classe.txt";
     private boolean teste;
     
     private Arquivista(){}
@@ -50,18 +49,18 @@ public class Arquivista {
         return lista;
     }
     
-    public void salvarClasse(ArrayList<Elemento> lista){
+    public void salvarClasse(ArrayList<Elemento> lista,String nome){
         try {
-            BufferedWriter arquivo = new BufferedWriter (new FileWriter(new File(nomeSaida),true));
+            BufferedWriter arquivo = new BufferedWriter (new FileWriter(new File(nome),true));
             arquivo.newLine();
-            arquivo.write("itens:" + lista.size());
+            arquivo.write("itens:;" + lista.size());
             arquivo.newLine();
             arquivo.newLine();
             for(int i = 0; i < lista.size(); i++){
                 for(int j = 0; j < lista.get(i).getValores().length; j++){
-                    arquivo.write(((int)lista.get(i).getValores()[j]) + ",");
+                    arquivo.write(((int)lista.get(i).getValores()[j]) + ";");
                 }
-                arquivo.write(lista.get(i).getGabarito());
+                if(teste)arquivo.write(lista.get(i).getGabarito());
                 arquivo.newLine();
             }
             arquivo.flush();

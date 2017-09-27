@@ -3,21 +3,36 @@ package modelo;
 
 import Persitencia.Arquivista;
 import java.util.ArrayList;
-import java.util.Random;
+import javax.swing.JOptionPane;
+
 
 public class Classificador {
     private ArrayList<Elemento> elementos = new ArrayList<>();
     private ArrayList<Elemento>[] classes;
     private int nClasses;
-    private String[] nomes;
+    private ArrayList<String> nomesSaida;
     private Elemento[] centroides;
-    private Arquivista dao = new Arquivista(".\\dados\\conjunto.txt", true);
+    private Elemento[] centroidesAnteriores;
+    private Arquivista dao;
     
-    private Classificador () {}
+    private Classificador () { }
     public Classificador (int k) {
+       init(k);
+    }
+    public Classificador (String arquivo, boolean teste){
+        dao  = new Arquivista(arquivo, teste);
+        elementos = dao.carregar();
+    }
+    
+    public int[] getContagem(){
+        int[] ret = {elementos.size(), elementos.get(0).getValores().length};
+        return ret;
+    }
+    
+    public void init(int k){
         this.nClasses = k;
-        nomes = new String[nClasses];
         this.centroides = new Elemento[nClasses];
+        this.centroidesAnteriores = new Elemento[nClasses];
         this.elementos = this.dao.carregar();
     }
     
@@ -30,20 +45,24 @@ public class Classificador {
     public void Classficar(){
         gerarCentroides(true);
         separarClasess();
-        for(int i = 0; i < 3; i++){
+        int j = 1;
+        while(!compararCentroides()){
             gerarCentroides(false);
             separarClasess();
+            j++;
         }
-        //this.dao.salvarClasse(this.classes[0]);
         
         for ( int i = 0; i < classes.length; i++ ) {
-            this.dao.salvarClasse(this.classes[i]);
+            this.dao.salvarClasse(this.classes[i], "classe_"+i+".csv");
             /*for ( int j = 0; j < classes[i].size(); j++ ) {
                 System.out.println(classes[i].get(j).getGabarito());
             }*/
             //System.out.println("modelo.Classificador.Classficar()");
         }
-        
+        JOptionPane.showMessageDialog(null, "Classificação finalizada.\n \t Número de interações: " + j, "Classificador", JOptionPane.PLAIN_MESSAGE);
+    }
+    public void setNome(ArrayList<String> lista){
+        nomesSaida = lista;
     }
     
     private void gerarCentroides( boolean novo ){
@@ -56,6 +75,7 @@ public class Classificador {
             }
         } else {
             Elemento el;
+            this.centroidesAnteriores = this.centroides;
             float[] centro;
             for( int i = 0; i < classes.length; i++ ) {
                 centro = new float[centroides[i].getValores().length];
@@ -108,6 +128,14 @@ public class Classificador {
             }
         }
         return menor;
+    }
+    
+    private boolean compararCentroides(){
+        boolean iguais = true;
+        for(int i = 0; i < centroides.length; i++){
+            if(centroides[i] != centroidesAnteriores[i]) return false;
+        }
+        return iguais;
     }
      
 }
