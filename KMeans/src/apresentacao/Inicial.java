@@ -1,5 +1,5 @@
 
-package kmeans;
+package apresentacao;
 
 import java.util.ArrayList;
 import modelo.Classificador;

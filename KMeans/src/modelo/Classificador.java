@@ -54,10 +54,6 @@ public class Classificador {
         
         for ( int i = 0; i < classes.length; i++ ) {
             this.dao.salvarClasse(this.classes[i], "classe_"+i+".csv");
-            /*for ( int j = 0; j < classes[i].size(); j++ ) {
-                System.out.println(classes[i].get(j).getGabarito());
-            }*/
-            //System.out.println("modelo.Classificador.Classficar()");
         }
         JOptionPane.showMessageDialog(null, "Classificação finalizada.\n \t Número de interações: " + j, "Classificador", JOptionPane.PLAIN_MESSAGE);
     }
@@ -136,6 +132,20 @@ public class Classificador {
             if(centroides[i] != centroidesAnteriores[i]) return false;
         }
         return iguais;
+    }
+    
+    private Float[] getModa(int i){
+        Float[] ret = new Float[this.classes[i].get(0).getValores().length];
+        Float[][] contagem = new Float[this.classes[i].size()][this.classes[i].get(0).getValores().length];
+        for(int linha = 0; linha < this.classes[i].get(0).getValores().length; linha++){
+            for (int coluna = linha + 1; coluna < this.classes[i].size(); coluna++){
+                if(this.classes[i].get(0).getValores()[linha] == this.classes[i].get(0).getValores()[coluna]){
+                    contagem[linha][coluna] = (contagem[linha][coluna] != null) ? contagem[linha][coluna] + 1 : 1;
+                }
+            }
+        }
+        
+        return ret;
     }
      
 }
