@@ -7,13 +7,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import modelo.Elemento;
 
 public class Arquivista {
     private String nomeArquivo;
     private boolean teste;
+    private final NumberFormat formatarFloat = new DecimalFormat("0.0000"); 
     
     private Arquivista(){}
     
@@ -44,30 +48,46 @@ public class Arquivista {
                 lista.add(el);
              }
         } catch (FileNotFoundException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(null, "ARQUIVO NÃO ENCONTRADO", "Classificador", JOptionPane.ERROR_MESSAGE);
         }
         return lista;
     }
     
-    public void salvarClasse(ArrayList<Elemento> lista,String nome){
+    public void salvarClasse(ArrayList<Elemento> lista, Elemento media, Float[] moda, float[] mediana, String nome){
         try {
             BufferedWriter arquivo = new BufferedWriter (new FileWriter(new File(nome),true));
             arquivo.newLine();
-            arquivo.write("itens:;" + lista.size());
+            arquivo.write("Itens:;" + lista.size());
+            arquivo.newLine();
+            arquivo.write("Media: ;");
+            for(int i = 0; i < media.getValores().length; i++){
+                arquivo.write(formatarFloat.format(media.getValores()[i]) + ";");
+            }
+            arquivo.newLine();
+            arquivo.write("Moda: ;");
+            for(int i = 0; i < moda.length; i++){
+                arquivo.write(moda[i] != null ? formatarFloat.format(moda[i]) + ";" : "N/A ;");
+            }
+            arquivo.newLine();
+            arquivo.write("Mediana:;");
+            for(int i = 0; i < moda.length; i++){
+                arquivo.write(formatarFloat.format(mediana[i]) + ";");
+            }
             arquivo.newLine();
             arquivo.newLine();
             for(int i = 0; i < lista.size(); i++){
+                arquivo.write(">;");
                 for(int j = 0; j < lista.get(i).getValores().length; j++){
-                    arquivo.write(((int)lista.get(i).getValores()[j]) + ";");
+                    arquivo.write((lista.get(i).getValores()[j]) + ";");
                 }
-                if(teste)arquivo.write(lista.get(i).getGabarito());
+                if(this.teste)arquivo.write(lista.get(i).getGabarito());
                 arquivo.newLine();
             }
             arquivo.flush();
             arquivo.close();
             
         } catch (IOException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(null, "FALHA INESPERADA AO ENCREVER O ARQUIVO", "Classificador", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -53,7 +53,7 @@ public class Classificador {
         }
         
         for ( int i = 0; i < classes.length; i++ ) {
-            this.dao.salvarClasse(this.classes[i], "classe_"+i+".csv");
+            this.dao.salvarClasse(this.classes[i], this.centroides[i], getModa(i), getMediana(i),"classe_"+i+".csv");
         }
         JOptionPane.showMessageDialog(null, "Classificação finalizada.\n \t Número de interações: " + j, "Classificador", JOptionPane.PLAIN_MESSAGE);
     }
@@ -135,17 +135,50 @@ public class Classificador {
     }
     
     private Float[] getModa(int i){
-        Float[] ret = new Float[this.classes[i].get(0).getValores().length];
+        Float[] retorno = new Float[this.classes[i].get(0).getValores().length];
         Float[][] contagem = new Float[this.classes[i].size()][this.classes[i].get(0).getValores().length];
+        Float maior = null;
         for(int linha = 0; linha < this.classes[i].get(0).getValores().length; linha++){
-            for (int coluna = linha + 1; coluna < this.classes[i].size(); coluna++){
-                if(this.classes[i].get(0).getValores()[linha] == this.classes[i].get(0).getValores()[coluna]){
-                    contagem[linha][coluna] = (contagem[linha][coluna] != null) ? contagem[linha][coluna] + 1 : 1;
+            for (int coluna = 0; coluna < this.classes[i].size(); coluna++){
+                for(int colunaFrente = coluna + 1; colunaFrente < this.classes[i].size(); colunaFrente++){
+                    if(this.classes[i].get(coluna).getValores()[linha] == this.classes[i].get(colunaFrente).getValores()[linha]){
+                        contagem[coluna][linha] = (contagem[coluna][linha] != null) ? contagem[coluna][linha] + 1 : 1;
+                    }
                 }
             }
         }
+        int coluna;
+        for(int linha = 0; linha < contagem.length; linha ++){
+            maior = contagem[linha][0];
+            for(coluna = 0; coluna < contagem[linha].length; coluna++){
+                if(maior != null && contagem[linha][coluna] != null){
+                    if(maior < contagem[linha][coluna]){
+                        maior = contagem[linha][coluna];
+                    }
+                }
+                retorno[coluna] = maior;
+            }
+        }
         
-        return ret;
+        return retorno;
     }
-     
+    
+   private float[] getMediana(int i){
+       float[] retorno;
+       float temp, maior;
+       int meio = this.classes[i].size() / 2;
+       for(int linha = 0; linha < this.classes[i].get(0).getValores().length; linha++){
+            maior = this.classes[i].get(linha).getValores()[0];
+           for (int coluna = linha + 1; coluna < this.classes[i].size(); coluna++){
+                if(maior < this.classes[i].get(coluna).getValores()[linha]){
+                    temp = maior;
+                    maior = this.classes[i].get(coluna).getValores()[linha];
+                    this.classes[i].get(coluna).getValores()[linha] = temp;
+                }
+            }
+        }
+        retorno = this.classes[i].get(meio).getValores();
+       return retorno;
+   } 
+    
 }
