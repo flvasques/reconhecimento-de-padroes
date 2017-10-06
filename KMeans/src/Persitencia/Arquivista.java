@@ -11,6 +11,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Elemento;
 
@@ -47,6 +49,11 @@ public class Arquivista {
                 if(teste) el.setGabarito(vetorLinha[vetorLinha.length - 1]);
                 lista.add(el);
              }
+            try {    
+                arquivo.close();
+            } catch (IOException ex) {
+                
+            }
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "ARQUIVO NÃO ENCONTRADO", "Classificador", JOptionPane.ERROR_MESSAGE);
         }
@@ -59,12 +66,12 @@ public class Arquivista {
             arquivo.newLine();
             arquivo.write("Itens:;" + lista.size());
             arquivo.newLine();
-            arquivo.write("Media: ;");
+            arquivo.write("Media:;");
             for(int i = 0; i < media.getValores().length; i++){
                 arquivo.write(formatarFloat.format(media.getValores()[i]) + ";");
             }
             arquivo.newLine();
-            arquivo.write("Moda: ;");
+            arquivo.write("Moda:;");
             for(int i = 0; i < moda.length; i++){
                 arquivo.write(moda[i] != null ? formatarFloat.format(moda[i]) + ";" : "N/A ;");
             }
@@ -87,7 +94,7 @@ public class Arquivista {
             arquivo.close();
             
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "FALHA INESPERADA AO ENCREVER O ARQUIVO", "Classificador", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "FALHA INESPERADA AO ESCREVER O ARQUIVO\nErro: " + ex, "Classificador", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
