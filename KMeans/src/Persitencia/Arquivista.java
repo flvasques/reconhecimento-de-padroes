@@ -94,7 +94,11 @@ public class Arquivista {
             arquivo.close();
             
         } catch (IOException ex) {
+<<<<<<< HEAD
             JOptionPane.showMessageDialog(null, "FALHA INESPERADA AO ESCREVER O ARQUIVO\nErro: " + ex, "Classificador", JOptionPane.ERROR_MESSAGE);
+=======
+            JOptionPane.showMessageDialog(null, "FALHA INESPERADA AO ESCREVER O ARQUIVO\n" + ex.toString(), "Classificador", JOptionPane.ERROR_MESSAGE);
+>>>>>>> 94dfffefa972d9ed1b926431c55b86e1d5700b8d
         }
     }
 }
