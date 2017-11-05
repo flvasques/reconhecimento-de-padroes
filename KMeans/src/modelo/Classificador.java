@@ -53,7 +53,7 @@ public class Classificador {
         }
         
         for ( int i = 0; i < classes.length; i++ ) {
-            this.dao.salvarClasse(this.classes[i], this.centroides[i], getModa(i), getMediana(i),"classe_"+i+".csv");
+            this.dao.salvarClasse(this.classes[i], this.centroides[i], getMediana(i),"classe_"+i+".csv");
         }
         JOptionPane.showMessageDialog(null, "Classificação finalizada.\n \t Número de interações: " + j, "Classificador", JOptionPane.PLAIN_MESSAGE);
     }
@@ -132,35 +132,6 @@ public class Classificador {
             if(centroides[i] != centroidesAnteriores[i]) return false;
         }
         return iguais;
-    }
-    
-    private Float[] getModa(int i){
-        Float[] retorno = new Float[this.classes[i].get(0).getValores().length];
-        Float[][] contagem = new Float[this.classes[i].size()][this.classes[i].get(0).getValores().length];
-        Float maior = null;
-        for(int linha = 0; linha < this.classes[i].get(0).getValores().length; linha++){
-            for (int coluna = 0; coluna < this.classes[i].size(); coluna++){
-                for(int colunaFrente = coluna + 1; colunaFrente < this.classes[i].size(); colunaFrente++){
-                    if(this.classes[i].get(coluna).getValores()[linha] == this.classes[i].get(colunaFrente).getValores()[linha]){
-                        contagem[coluna][linha] = (contagem[coluna][linha] != null) ? contagem[coluna][linha] + 1 : 1;
-                    }
-                }
-            }
-        }
-        int coluna;
-        for(int linha = 0; linha < contagem.length; linha ++){
-            maior = contagem[linha][0];
-            for(coluna = 0; coluna < contagem[linha].length; coluna++){
-                if(maior != null && contagem[linha][coluna] != null){
-                    if(maior < contagem[linha][coluna]){
-                        maior = contagem[linha][coluna];
-                    }
-                }
-                retorno[coluna] = maior;
-            }
-        }
-        
-        return retorno;
     }
     
    private float[] getMediana(int i){

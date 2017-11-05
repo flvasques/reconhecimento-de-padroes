@@ -18,21 +18,23 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         new Inicial();
         //new Classificador(5).Classficar();
-        /*ArrayList<String>texto = new ArrayList<>();
+       /*
+        ArrayList<String>texto = new ArrayList<>();
         String linha;
-        FileReader arquivo = new FileReader("C:\\Users\\Fernando Vasques\\ReposGiTHub\\conjunto.txt");
+        FileReader arquivo = new FileReader("C:\\Users\\Fernando Vasques\\ReposGiTHub\\baseVocacional.arff");
         Scanner leitor = new Scanner (arquivo);
         while(leitor.hasNextLine()){
             linha = leitor.nextLine();
-            texto.add(linha.replace(",", ";"));
+            texto.add(linha.replace(";", ",").replace("'", ""));
         }
         arquivo.close();
-        BufferedWriter escritor = new BufferedWriter (new FileWriter(new File("conjunto.csv"),true));
+        BufferedWriter escritor = new BufferedWriter (new FileWriter(new File("baseVocacional.arff"),true));
         for(int i = 0; i < texto.size(); i++){
             escritor.write(texto.get(i));
             escritor.newLine();
         }
         escritor.flush();
-        escritor.close();*/
+        escritor.close();
+        */
     }  
 }

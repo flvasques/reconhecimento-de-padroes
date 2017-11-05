@@ -11,8 +11,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Elemento;
 
@@ -60,7 +58,7 @@ public class Arquivista {
         return lista;
     }
     
-    public void salvarClasse(ArrayList<Elemento> lista, Elemento media, Float[] moda, float[] mediana, String nome){
+    public void salvarClasse(ArrayList<Elemento> lista, Elemento media, float[] mediana, String nome){
         try {
             BufferedWriter arquivo = new BufferedWriter (new FileWriter(new File(nome),true));
             arquivo.newLine();
@@ -71,13 +69,8 @@ public class Arquivista {
                 arquivo.write(formatarFloat.format(media.getValores()[i]) + ";");
             }
             arquivo.newLine();
-            arquivo.write("Moda:;");
-            for(int i = 0; i < moda.length; i++){
-                arquivo.write(moda[i] != null ? formatarFloat.format(moda[i]) + ";" : "N/A ;");
-            }
-            arquivo.newLine();
             arquivo.write("Mediana:;");
-            for(int i = 0; i < moda.length; i++){
+            for(int i = 0; i < mediana.length; i++){
                 arquivo.write(formatarFloat.format(mediana[i]) + ";");
             }
             arquivo.newLine();
